@@ -1,6 +1,5 @@
 /*
 NUMBER  -> <число>
-unary   ->  | NUMBER
 group   -> "("  add  ")" | NUMBER
 mult    -> group (( "*" | "/" ) group)*
 add     -> mult (( "+" | "-" ) mult)*

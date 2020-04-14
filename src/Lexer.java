@@ -54,7 +54,7 @@ class Lexer {
         LEXEMES = new HashMap<>();
         LEXEMES.put("(", new Lexeme(LexemeType.OPENING_BRACKET,"("));
         LEXEMES.put(")", new Lexeme(LexemeType.CLOSING_BRACKET,")"));
-        LEXEMES.put("minus", new UnaryOperator("-", (d1) -> -d1));
+        // LEXEMES.put("minus", new UnaryOperator("-", (d1) -> -d1));
         LEXEMES.put("+", new BinaryOperator("+", Double::sum));
         LEXEMES.put("-", new BinaryOperator("-", (d1, d2) -> d1 - d2));
         LEXEMES.put("*", new BinaryOperator("*", (d1, d2) -> d1 * d2));
