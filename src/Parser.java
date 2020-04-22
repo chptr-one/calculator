@@ -7,7 +7,7 @@ result  -> add
 */
 
 import java.util.List;
-// TODO add an unary operators
+
 class Parser {
     List<Lexeme> lexemes;
     int pos;
@@ -19,25 +19,25 @@ class Parser {
 
     double result() {
         Lexeme lexeme = lexemes.get(pos);
-        return (lexeme.type == LexemeType.END) ? Double.NaN : add();
+        return (lexeme.getType() == LexemeType.END) ? Double.NaN : add();
     }
 
     double number() {
         Lexeme lexeme = lexemes.get(pos);
-        if (lexeme.type == LexemeType.NUMBER) {
+        if (lexeme.getType() == LexemeType.NUMBER) {
             pos++;
-            return Double.parseDouble(lexeme.value);
+            return Double.parseDouble(lexeme.getValue());
         } else
             throw new IllegalArgumentException("Expected NUMBER");
     }
 
     double group() {
         Lexeme lexeme = lexemes.get(pos);
-        if (lexeme.type == LexemeType.OPENING_BRACKET) {
+        if (lexeme.getType() == LexemeType.OPENING_BRACKET) {
             pos++;
             double result = add();
             lexeme = lexemes.get(pos);
-            if (lexeme.type == LexemeType.CLOSING_BRACKET) {
+            if (lexeme.getType() == LexemeType.CLOSING_BRACKET) {
                 pos++;
                 return result;
             } else throw new IllegalArgumentException("Expected )");
@@ -49,9 +49,9 @@ class Parser {
     double mult() {
         double result = group();
         Lexeme lexeme = lexemes.get(pos);
-        while (lexeme.type == LexemeType.BINARY_OPERATOR && lexeme.value.matches("[*|/]")) {
+        while (lexeme.getType() == LexemeType.MULTIPLY || lexeme.getType() == LexemeType.DIVIDE ) {
             pos++;
-            result = ((BinaryOperator) lexeme).operator.applyAsDouble(result, group());
+            result = lexeme.getType().action(result, group());
             lexeme = lexemes.get(pos);
         }
         return result;
@@ -60,17 +60,11 @@ class Parser {
     double add() {
         double result = mult();
         Lexeme lexeme = lexemes.get(pos);
-        while (lexeme.type == LexemeType.BINARY_OPERATOR && lexeme.value.matches("[+|-]")) {
+        while (lexeme.getType() == LexemeType.ADD || lexeme.getType() == LexemeType.SUBSTRACT) {
             pos++;
-            result = ((BinaryOperator) lexeme).operator.applyAsDouble(result, mult());
+            result = lexeme.getType().action(result, mult());
             lexeme = lexemes.get(pos);
         }
         return result;
-    }
-
-    public static void main(String[] args) {
-        String expr = "(2 * 3 - (2 - 1) * 2) / 2";
-        Parser parser = new Parser(expr);
-        System.out.println(parser.result());
     }
 }
