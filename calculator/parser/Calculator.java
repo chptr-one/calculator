@@ -51,7 +51,7 @@ public class Calculator {
         while (tokenizer.hasNext(TokenType.ADD, TokenType.SUBSTRACT)) {
             Token operator = tokenizer.getNext();
             double secondOperand = mult();
-            if ("-".equals(operator.getValue()))
+            if (operator.getType() == TokenType.SUBSTRACT)
                 secondOperand = -secondOperand;
             result += secondOperand;
         }
@@ -63,7 +63,7 @@ public class Calculator {
         while (tokenizer.hasNext(TokenType.MULTIPLY, TokenType.DIVIDE)) {
             Token operator = tokenizer.getNext();
             double secondOperand = group();
-            if ("/".equals(operator.getValue()))
+            if (operator.getType() == TokenType.DIVIDE)
                 result /= secondOperand;
             else
                 result *= secondOperand;

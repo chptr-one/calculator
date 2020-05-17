@@ -38,7 +38,7 @@ class Tokenizer {
         if (hasNext(type)) {
             return getNext();
         }
-        throw new TokenException("Invalid expression. Expected " + type + " at pos " + pos + ".");
+        throw new TokenException("Invalid expression");
     }
 
     private Token peekNext() {
@@ -108,7 +108,7 @@ class Tokenizer {
                     break;
                 }
                 default: {
-                    throw new TokenException("Invalid expression. Unknown operator " + ch);
+                    throw new TokenException("Invalid expression");
                 }
             }
             expression = expression.substring(1);
