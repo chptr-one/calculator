@@ -18,7 +18,7 @@ The program supports variables. The variable name consists of Latin characters w
 Use the following syntax to assign a value to a variable:
   VARIABLE = expression
   
-Some valid assignvents:
+Some valid assignments:
   a = 2
   a=  (2+2)/2
   first = 1/2
