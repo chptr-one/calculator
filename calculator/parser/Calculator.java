@@ -5,9 +5,9 @@ package calculator.parser;
     add -> mult ([+|-] mult)*
     mult -> group ([*|/] group)*
     group   -> [(] add [)] | number
-    number -> ([+|-])* [double | VARIABLE]
+    number -> ([+|-])* [double | variable]
     double -> "[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?"
-    VARIABLE -> "[a-zA-Z]+"
+    variable -> "[a-zA-Z]+"
  */
 
 import calculator.exceptions.TokenException;
@@ -18,11 +18,10 @@ public class Calculator {
     private final Tokenizer tokenizer = new Tokenizer();
 
     public void setVariable(String input) throws VariableException {
-        final String VAR_REGEX = "[a-zA-Z]+";
         int splitPosition = input.indexOf("=");
         String name = input.substring(0, splitPosition).trim();
 
-        if (name.matches(VAR_REGEX)) {
+        if (name.matches(VariableStorage.VAR_REGEX)) {
             String expression = input.substring(splitPosition + 1).trim();
             Calculator calc = new Calculator();
             try {

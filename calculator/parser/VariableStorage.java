@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class VariableStorage {
+    public static final String VAR_REGEX = "[a-zA-Z]+";
     private final static VariableStorage instance = new VariableStorage();
     private final Map<String, Double> pool = new HashMap<>();
 
