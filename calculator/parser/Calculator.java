@@ -10,15 +10,14 @@ package calculator.parser;
     VARIABLE -> "[a-zA-Z]+"
  */
 
-import calculator.exceptions.InvalidIdentifierException;
-import calculator.exceptions.UnknownTokenException;
-import calculator.exceptions.UnknownVariableException;
+import calculator.exceptions.TokenException;
+import calculator.exceptions.VariableException;
 
 public class Calculator {
     public final VariableStorage variables = VariableStorage.getInstance();
     private final Tokenizer tokenizer = new Tokenizer();
 
-    public void setVariable(String input) throws InvalidIdentifierException {
+    public void setVariable(String input) throws VariableException {
         final String VAR_REGEX = "[a-zA-Z]+";
         int splitPosition = input.indexOf("=");
         String name = input.substring(0, splitPosition).trim();
@@ -29,26 +28,26 @@ public class Calculator {
             try {
                 Double value = calc.calculate(expression);
                 variables.setVariable(name, value);
-            } catch (UnknownTokenException | UnknownVariableException e) {
+            } catch (TokenException | VariableException e) {
                 System.out.println(e.getMessage());
             }
         } else
-            throw new InvalidIdentifierException("Invalid identifier");
+            throw new VariableException("Invalid identifier");
     }
 
-    public double calculate(String input) throws UnknownTokenException, UnknownVariableException {
+    public double calculate(String input) throws TokenException, VariableException {
         tokenizer.parseExpression(input);
         return expression();
     }
 
-    private double expression() throws UnknownTokenException, UnknownVariableException {
+    private double expression() throws TokenException, VariableException {
         double result = add();
         if (tokenizer.hasNext())
-            throw new UnknownTokenException("Invalid expression.");
+            throw new TokenException("Invalid expression.");
         return result;
     }
 
-    private double add() throws UnknownTokenException, UnknownVariableException {
+    private double add() throws TokenException, VariableException {
         double result = mult();
         while (tokenizer.hasNext(TokenType.ADD, TokenType.SUBSTRACT)) {
             Token operator = tokenizer.getNext();
@@ -60,7 +59,7 @@ public class Calculator {
         return result;
     }
 
-    private double mult() throws UnknownTokenException, UnknownVariableException {
+    private double mult() throws TokenException, VariableException {
         double result = group();
         while (tokenizer.hasNext(TokenType.MULTIPLY, TokenType.DIVIDE)) {
             Token operator = tokenizer.getNext();
@@ -73,7 +72,7 @@ public class Calculator {
         return result;
     }
 
-    private double group() throws UnknownTokenException, UnknownVariableException {
+    private double group() throws TokenException, VariableException {
         double result;
         if (tokenizer.hasNext(TokenType.BRACKET)) {
             tokenizer.getNext(TokenType.BRACKET);
@@ -85,7 +84,7 @@ public class Calculator {
         return result;
     }
 
-    private double number() throws UnknownTokenException, UnknownVariableException {
+    private double number() throws TokenException, VariableException {
         int sign = 1;
         while (tokenizer.hasNext(TokenType.ADD, TokenType.SUBSTRACT)) {
             Token operator = tokenizer.getNext();
@@ -99,8 +98,8 @@ public class Calculator {
         else {
             try {
                 return variables.getValue(tokenizer.getNext(TokenType.VARIABLE).getValue()) * sign;
-            } catch (UnknownVariableException e) {
-                throw new UnknownVariableException("Unknown variable");
+            } catch (VariableException e) {
+                throw new VariableException("Unknown variable");
             }
         }
     }

@@ -1,6 +1,6 @@
 package calculator.parser;
 
-import calculator.exceptions.UnknownVariableException;
+import calculator.exceptions.VariableException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,11 +24,11 @@ public class VariableStorage {
         }
     }
 
-    double getValue(String name) throws UnknownVariableException {
+    double getValue(String name) throws VariableException {
         if (pool.containsKey(name)) {
             return pool.get(name);
         } else {
-            throw new UnknownVariableException("Unknown variable");
+            throw new VariableException("Unknown variable");
         }
     }
 }

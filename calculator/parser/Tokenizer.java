@@ -1,6 +1,6 @@
 package calculator.parser;
 
-import calculator.exceptions.UnknownTokenException;
+import calculator.exceptions.TokenException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,18 +34,18 @@ class Tokenizer {
         return tokens.get(pos++);
     }
 
-    Token getNext(TokenType type) throws UnknownTokenException {
+    Token getNext(TokenType type) throws TokenException {
         if (hasNext(type)) {
             return getNext();
         }
-        throw new UnknownTokenException("Invalid expression. Expected " + type + " at pos " + pos + ".");
+        throw new TokenException("Invalid expression. Expected " + type + " at pos " + pos + ".");
     }
 
     private Token peekNext() {
         return tokens.get(pos);
     }
 
-    void parseExpression(String expression) throws UnknownTokenException {
+    void parseExpression(String expression) throws TokenException {
         Matcher doubleMatcher = Pattern.compile(DOUBLE_REGEX).matcher(expression);
         Matcher variableMatcher = Pattern.compile(VAR_REGEX).matcher(expression);
 
@@ -60,7 +60,7 @@ class Tokenizer {
                 expression = expression.substring(value.length());
                 variableMatcher.reset(expression);
                 if (!expression.isEmpty() && variableMatcher.lookingAt()) {
-                    throw new UnknownTokenException("Invalid expression");
+                    throw new TokenException("Invalid expression");
                 }
                 tokens.add(new Token(TokenType.NUMBER, value));
                 continue;
@@ -72,7 +72,7 @@ class Tokenizer {
                 expression = expression.substring(value.length());
                 doubleMatcher.reset(expression);
                 if (!expression.isEmpty() && doubleMatcher.lookingAt()) {
-                    throw new UnknownTokenException("Invalid expression");
+                    throw new TokenException("Invalid expression");
                 }
                 tokens.add(new Token(TokenType.VARIABLE, value));
                 continue;
@@ -108,7 +108,7 @@ class Tokenizer {
                     break;
                 }
                 default: {
-                    throw new UnknownTokenException("Invalid expression. Unknown operator " + ch);
+                    throw new TokenException("Invalid expression. Unknown operator " + ch);
                 }
             }
             expression = expression.substring(1);

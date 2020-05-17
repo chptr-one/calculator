@@ -1,8 +1,7 @@
 package calculator;
 
-import calculator.exceptions.InvalidIdentifierException;
-import calculator.exceptions.UnknownTokenException;
-import calculator.exceptions.UnknownVariableException;
+import calculator.exceptions.TokenException;
+import calculator.exceptions.VariableException;
 import calculator.parser.Calculator;
 
 import java.util.Scanner;
@@ -20,13 +19,13 @@ public class Main {
                 if (input.contains("=")) {
                     try {
                         calc.setVariable(input);
-                    } catch (InvalidIdentifierException e) {
+                    } catch (VariableException e) {
                         System.out.println(e.getMessage());
                     }
                 } else {
                     try {
                         System.out.println(calc.calculate(input));
-                    } catch (UnknownTokenException | UnknownVariableException e) {
+                    } catch (TokenException | VariableException e) {
                         System.out.println(e.getMessage());
                     }
                 }
