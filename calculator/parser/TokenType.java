@@ -3,7 +3,7 @@ package calculator.parser;
 enum TokenType {
     NUMBER,
     ADD,
-    SUBSTRACT,
+    SUBTRACT,
     MULTIPLY,
     DIVIDE,
     BRACKET,

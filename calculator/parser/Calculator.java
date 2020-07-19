@@ -48,10 +48,10 @@ public class Calculator {
 
     private double add() throws TokenException, VariableException {
         double result = mult();
-        while (tokenizer.hasNext(TokenType.ADD, TokenType.SUBSTRACT)) {
+        while (tokenizer.hasNext(TokenType.ADD, TokenType.SUBTRACT)) {
             Token operator = tokenizer.getNext();
             double secondOperand = mult();
-            if (operator.getType() == TokenType.SUBSTRACT)
+            if (operator.getType() == TokenType.SUBTRACT)
                 secondOperand = -secondOperand;
             result += secondOperand;
         }
@@ -85,7 +85,7 @@ public class Calculator {
 
     private double number() throws TokenException, VariableException {
         int sign = 1;
-        while (tokenizer.hasNext(TokenType.ADD, TokenType.SUBSTRACT)) {
+        while (tokenizer.hasNext(TokenType.ADD, TokenType.SUBTRACT)) {
             Token operator = tokenizer.getNext();
             if ("-".equals(operator.getValue())) {
                 sign *= -1;

@@ -85,7 +85,7 @@ class Tokenizer {
                     break;
                 }
                 case '-': {
-                    tokens.add(new Token(TokenType.SUBSTRACT, "-"));
+                    tokens.add(new Token(TokenType.SUBTRACT, "-"));
                     break;
                 }
                 case '*': {
